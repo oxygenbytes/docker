@@ -5,6 +5,7 @@ version: "2"
 
 services:
   kafka:
+    container_name: kafka
     image: docker.io/bitnami/kafka:latest
     ports:
       - "9092:9092"
@@ -20,3 +21,14 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
     user: root
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 8777:8080
+    depends_on:
+      - kafka
+    environment:
+      DYNAMIC_CONFIG_ENABLED: "TRUE"
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
